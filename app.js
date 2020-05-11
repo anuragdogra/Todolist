@@ -109,7 +109,12 @@ app.post("/delete",function(req,res){
    }
    
 });
+let port =process.env.PORT;
+if(port == null || port == "")
+{
+   port=3027;
+}
 
-app.listen(3027,function(){
+app.listen(port,function(){
 console.log("server started");
 });
