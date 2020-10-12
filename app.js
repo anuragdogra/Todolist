@@ -9,7 +9,7 @@ const app=express();
 app.set("view engine","ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
-const MONGODB_URI='mongodb+srv://anu_123:anurag@todolistdb-qohv9.mongodb.net/test?retryWrites=true&w=majority'
+const MONGODB_URI='mongodb+srv://anurag:anurag@todolistdb-qohv9.mongodb.net/test?retryWrites=true&w=majority'
 mongoose.connect(MONGODB_URI || 'mongodb://localhost/todolistDB',{useUnifiedTopology:true,useNewUrlParser:true});
 mongoose.connection.on('connected', function() {
    console.log("connected");
@@ -90,23 +90,12 @@ app.post("/",function(req,res){
 app.post("/delete",function(req,res){
    const checkid=req.body.checkbox;
    const listname=req.body.listname;
-   if(listname === "today" )
-   {
-      Item.findByIdAndRemove(checkid,function(err){
-         if(!err)
-         {
-            console.log("sucessfully deleted checked items");
-            res.redirect("/"  );
-         }
-      });
-   }else{
       List.findOneAndUpdate({name:listname},{$pull:{items:{_id:checkid}}},function(err,foundList){
          if(!err)
          {
             res.redirect("/" + listname);
          }
-      });
-   }
+      }); 
    
 });
 let port =process.env.PORT;
